@@ -4,7 +4,10 @@ from test_desorber import Desorber
 
 from tespy.components import Source, Sink, Pump, Valve, HeatExchanger, CycleCloser, SimpleHeatExchanger
 from tespy.networks import Network
-from tespy.connections import Connection, Ref
+from tespy.connections import Connection, Ref, Bus
+
+import numpy as np
+import pandas as pd
 
 
 nw = Network(T_unit="C", p_unit="bar")
@@ -65,9 +68,9 @@ c12 = Connection(cd, "out1", refr_pump, "in1", label="12")
 c13 = Connection(refr_pump, "out1", ev, "in1", label="13")
 c14 = Connection(ev, "out1", absorber, "in2", label="14")
 
-c10.set_attr(fluid={"water": 1}, x=1, m=1, T=10)
+c10.set_attr(fluid={"water": 1}, x=1, m=1)
 c11.set_attr(fluid={"water": 1}, m=1)
-c12.set_attr(x=0)
+c12.set_attr(x=0, T=10)
 c14.set_attr(x=1, T=90)
 
 cd.set_attr(pr=1)
@@ -83,14 +86,6 @@ sol_pump.set_attr(eta_s=0.75)
 
 c2.set_attr(h_ref=None)
 sol_heatex.set_attr(ttd_u=10)
-
-nw.solve("design")
-
-c1.set_attr(m=None)
-desorber.set_attr(Q=1e6)
-
-c10.set_attr(m=None)
-ev.set_attr(Q=2.5e6)
 
 c11.set_attr(m=None)
 c11.set_attr(m=Ref(c10, 1, 0))
@@ -123,39 +118,97 @@ nw.add_ude(water_ude) #, libr_ude)
 
 c4.set_attr(fluid={"INCOMP::LiBr": None, "water": None})
 c6.set_attr(fluid={"INCOMP::LiBr": None, "water": None})
-# c1.set_attr(T=120)
-c4.set_attr(T=20)
+c1.set_attr(T=120)
+c4.set_attr(T=35)
+
+c10.set_attr(x=None)
+c10.set_attr(T=Ref(c3, 1, 0))
+
+c1.set_attr(m=None)
 
 nw.solve("design")
 
 print([c.fluid.val for c in (c6, c3, c4)])
 
+for T in np.linspace(120, 112, 3):
+    c1.set_attr(T=T)
+    nw.solve("design")
+
 nw.print_results()
 
-exit()
+# exit()
+
+heat_input = Bus("heat input bus")
+
+heat_input.add_comps(
+    {"comp": desorber, "base": "bus"},
+    {"comp": ev, "base": "bus"}
+)
+
+nw.add_busses(heat_input)
 
 # 1st law consistency check
 print(sum([refr_pump.P.val, sol_pump.P.val, cd.Q.val, ev.Q.val, absorber.Q.val, desorber.Q.val]))
+
+c10.set_attr(m=None)
+heat_input.set_attr(P=5e6)
+
+nw.solve("design")
+nw.print_results()
+
 nw.set_attr(iterinfo=False)
 
-results = {}
-import pandas as pd
 
-results["T_evap"] = pd.DataFrame()
+stream_info = pd.DataFrame(columns=["m", "p", "h", "T", "water", "LiBr", "ex_ph", "ex_mech", "ex_th"])
+for c in nw.conns["object"]:
+    c.get_physical_exergy(1e5, 298.15)
+    stream_info.loc[c.label] = [c.m.val_SI, c.p.val_SI, c.h.val_SI, c.T.val_SI, c.fluid.val.get("water", None), c.fluid.val.get("LiBr", None), c.ex_physical, c.ex_mech, c.ex_therm]
 
-for T in range(65, 90):
-    c14.set_attr(T=T)
-    nw.solve("design")
-    results["T_evap"].loc[T, "power input"] = sum([refr_pump.P.val, sol_pump.P.val])
-    results["T_evap"].loc[T, "heat input"] = sum([ev.Q.val, desorber.Q.val])
-    results["T_evap"].loc[T, "heat production"] = sum([absorber.Q.val])
+stream_info.to_csv("result_heat_transformer.csv")
 
-import matplotlib.pyplot as plt
+# exit()
+
+# results = {}
+# import pandas as pd
+
+# results["T_evap"] = pd.DataFrame()
+
+# for T in range(79, 91)[::-1]:
+#     c14.set_attr(T=T)
+#     nw.solve("design")
+#     results["T_evap"].loc[T, "power input"] = sum([refr_pump.P.val, sol_pump.P.val])
+#     results["T_evap"].loc[T, "heat input"] = sum([ev.Q.val, desorber.Q.val])
+#     results["T_evap"].loc[T, "heat production"] = sum([absorber.Q.val])
+#     print(sol_heatex.ttd_u.val, sol_heatex.ttd_l.val)
+
+# results
+
+# # for T in range()
+# # for T in range(80, 85):
+# #     c14.set_attr(T=T)
+# #     nw.solve("design")
+# # c14.set_attr(T=90)
+
+# # nw.solve("design")
+
+# # results["T_cond"] = pd.DataFrame()
+
+# # for T in range(5, 20):
+# #     c12.set_attr(T=T)
+# #     nw.solve("design")
+# #     results["T_cond"].loc[T, "power input"] = sum([refr_pump.P.val, sol_pump.P.val])
+# #     results["T_cond"].loc[T, "heat input"] = sum([ev.Q.val, desorber.Q.val])
+# #     results["T_cond"].loc[T, "heat production"] = sum([absorber.Q.val])
+
+# import matplotlib.pyplot as plt
 
 
-fig, ax = plt.subplots(1)
+# fig, ax = plt.subplots(1, 2, sharey=True)
 
-ax.plot(results["T_evap"].index, results["T_evap"]["heat production"])
-ax.plot(results["T_evap"].index, results["T_evap"]["heat input"])
+# # ax[0].plot(results["T_cond"].index, results["T_cond"]["heat production"])
+# ax[1].plot(results["T_evap"].index, results["T_evap"]["heat production"])
 
-plt.show()
+# plt.show()
+
+
+# # Konzentrationsdifferenz?

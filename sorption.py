@@ -34,8 +34,6 @@ class Sorption(Component):
                 "num_eq": 1
             },
         }
-        print(self.outl[0].solvent)
-        print(self.outl[0].fluid.is_var)
         if self.outl[0].solvent in self.outl[0].fluid.is_var:
             constraints["saturation_constraints_water"] = {
                 "func": self.saturated_solution_water_func,
@@ -43,7 +41,6 @@ class Sorption(Component):
                 "constant_deriv": False,
                 "num_eq": 1
             }
-        print(sum(constraint["num_eq"] for constraint in constraints.values()))
         return constraints
 
     def mass_flow_func(self):
@@ -128,6 +125,22 @@ class Sorption(Component):
             sum([c.h.val_SI * c.m.val_SI for c in self.outl])
             - sum([c.h.val_SI * c.m.val_SI for c in self.inl])
         )
+
+    def bus_func(self, bus):
+        return self.calc_Q()
+
+    def bus_deriv(self, bus):
+        f = self.calc_bus_value
+        for c in self.inl + self.outl:
+            if c.m.is_var:
+                if c.m.J_col not in bus.jacobian:
+                    bus.jacobian[c.m.J_col] = 0
+                bus.jacobian[c.m.J_col] -= self.numeric_deriv(f, 'm', c, bus=bus)
+
+            if c.h.is_var:
+                if c.h.J_col not in bus.jacobian:
+                    bus.jacobian[c.h.J_col] = 0
+                bus.jacobian[c.h.J_col] -= self.numeric_deriv(f, 'h', c, bus=bus)
 
     def calc_parameters(self):
         self.Q.val = self.calc_Q()
