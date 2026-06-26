@@ -1,7 +1,6 @@
 
 from CoolProp.CoolProp import AbstractState
 import CoolProp as CP
-import numpy as np
 
 
 libr = AbstractState("INCOMP", "LiBr")
