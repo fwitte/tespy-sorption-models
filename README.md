@@ -1,48 +1,36 @@
 # Sorption component models in TESPy
 
-This is a prototype for the implementation of sorption processes in [TESPy][].
-Two models are included in the repository and validated with data from different
-literature sources:
+This repository is a development sandbox for the sorption components
+(`Absorber`, `Desorber`) being implemented in [TESPy][] on the
+[feature/sorption-components][] branch. It contains standalone example
+scripts and reference utilities used during development and validation.
 
-1. Refrigeration machine
-2. Heat transformer
+## Contents
 
-## Usage
+| File | Description |
+|------|-------------|
+| `example_absorber.py` | Standalone absorber network - exercises several specification combinations (vapour inlet, poor/rich solution, LiBr mixture) |
+| `example_desorber.py` | Standalone desorber network - mirrors the absorber examples for the desorber component |
+| `sorption_reference.py` | CoolProp-based reference functions for LiBr saturation pressure/concentration, used as fixed-point inputs in the example scripts |
 
-Clone the repository and build a new `python3.11` environment. From the base
-directory of the repository run
+## Installation
+
+Requires [uv][]. From the base directory of this repository:
 
 ``` bash
-pip install -r ./requirements.txt
+uv sync
 ```
 
-to install the version specific requirements.
+This installs TESPy directly from the `feature/sorption-components` branch on
+GitHub together with all other dependencies.
 
-## Refrigeration machine
+## Open tasks
 
-### Model
-
-<figure>
-<img src="./flowsheet.svg" class="align-center" />
-</figure>
-
-### Validation
-
-The [validation][] folder contains the original data from literature. The
-deviation between literature and TESPy values can be obtained by changing to
-validation directory and running validation.py.
-
-## Heat transformer
-
-### Model
-
-### Validation
-
-## Citation
-
-The state of this repository is archived via zenodo. If you are using the
-TESPy model within your own research, you can refer to this model via the
-zenodo doi: [10.5281/zenodo.6592257][].
+- [ ] Validate absorber and desorber implementations against literature data
+- [ ] Build a combined absorber/desorber cycle (single-effect absorption system)
+- [ ] Extend the combined cycle to include a cooling machine (compression chiller driven by the absorber heat)
+- [ ] Add a solution heat exchanger between rich/poor streams
+- [ ] Investigate rectifier/condenser integration for ammonia-water working pairs
 
 ## MIT License
 
@@ -68,4 +56,5 @@ SOFTWARE.
 
 
   [TESPy]: https://github.com/oemof/tespy
-  [validation]: ./validation/
+  [feature/sorption-components]: https://github.com/oemof/tespy/tree/feature/sorption-components
+  [uv]: https://docs.astral.sh/uv/

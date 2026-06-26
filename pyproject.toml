@@ -1,0 +1,12 @@
+[project]
+name = "tespy-sorption-models"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "tespy",
+]
+
+[tool.uv.sources]
+tespy = { git = "https://github.com/oemof/tespy", branch = "feature/sorption-components" }
