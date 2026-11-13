@@ -12,7 +12,7 @@ poor_snk = Sink("poor solution sink")
 vap_snk  = Sink("vapour sink")
 desorber  = Desorber("desorber")
 
-c_rich = SolutionConnection(rich_src, "out1", desorber, "in1",  label="rich_in")
+c_rich = SolutionConnection(rich_src, "out1", desorber, "in1",  label="rich_in", mixing_rule="libr-water")
 c_poor = SolutionConnection(desorber, "out1", poor_snk, "in1",  label="poor_out")
 c_vap  = Connection(desorber,         "out2", vap_snk,  "in1",  label="vapour_out")
 
@@ -20,13 +20,15 @@ nw.add_conns(c_rich, c_poor, c_vap)
 
 c_rich.set_attr(xi=1 - x_water_rich, p=p_cond, m=10, h=h_pump_out)
 c_poor.set_attr(h=h_poor)
-c_vap.set_attr(fluid={"H2O": 1}, x=1)
+c_vap.set_attr(fluid={"H2O": 1})
 
 nw.max_iter = 40
 nw.solve("design")
 nw.print_results()
 
-c_vap.set_attr(x=None, T=320)
+# the vapor leaves in equilibrium with the refrigerant-poor solution instead
+# of the entering refrigerant-rich solution
+desorber.set_attr(vapor_state="outlet-equilibrium")
 
 nw.solve("design")
 nw.print_results()
@@ -41,7 +43,7 @@ c_poor.set_attr(m=None, T=350)
 nw.solve("design")
 nw.print_results()
 
-c_poor.set_attr(fluid={"INCOMP::LiBr": 0.7})
+c_poor.set_attr(fluid={"LiBr": 0.7})
 c_rich.set_attr(p=None)
 
 nw.solve("design")

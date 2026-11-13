@@ -14,7 +14,7 @@ cool_src = Source("cooling water source")
 cool_snk = Sink("cooling water sink")
 absorber = CooledAbsorber("absorber")
 
-c_poor = SolutionConnection(poor_src, "out1", absorber, "in1", label="poor_in")
+c_poor = SolutionConnection(poor_src, "out1", absorber, "in1", label="poor_in", mixing_rule="libr-water")
 c_cool_in = Connection(cool_src, "out1", absorber, "in2", label="cooling_in")
 c_vap  = Connection(vap_src, "out1", absorber, "in3", label="vapour_in")
 c_rich = SolutionConnection(absorber, "out1", rich_snk, "in1", label="rich_out")

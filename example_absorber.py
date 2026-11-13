@@ -12,7 +12,7 @@ vap_src  = Source("vapour source")
 rich_snk = Sink("rich solution sink")
 absorber  = Absorber("absorber")
 
-c_poor = SolutionConnection(poor_src, "out1", absorber, "in1", label="poor_in")
+c_poor = SolutionConnection(poor_src, "out1", absorber, "in1", label="poor_in", mixing_rule="libr-water")
 c_vap  = Connection(vap_src,          "out1", absorber, "in2", label="vapour_in")
 c_rich = SolutionConnection(absorber, "out1", rich_snk, "in1", label="rich_out")
 
@@ -38,7 +38,7 @@ nw.solve("design")
 nw.print_results()
 
 c_vap.set_attr(p=None)
-c_rich.set_attr(fluid={"INCOMP::LiBr": 0.50})
+c_rich.set_attr(fluid={"LiBr": 0.50})
 
 nw.solve("design")
 nw.print_results()

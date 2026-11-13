@@ -9,9 +9,17 @@ scripts and reference utilities used during development and validation.
 
 | File | Description |
 |------|-------------|
-| `example_absorber.py` | Standalone absorber network - exercises several specification combinations (vapour inlet, poor/rich solution, LiBr mixture) |
-| `example_desorber.py` | Standalone desorber network - mirrors the absorber examples for the desorber component |
-| `sorption_reference.py` | CoolProp-based reference functions for LiBr saturation pressure/concentration, used as fixed-point inputs in the example scripts |
+| `example_absorber.py` | Standalone absorber network - exercises several specification combinations (vapor inlet, refrigerant-poor/-rich solution, LiBr mass fraction) |
+| `example_absorber_cooled.py` | Absorber with integrated cooling water side (`CooledAbsorber`) - mass flow, terminal temperature difference and heat flow specifications |
+| `example_desorber.py` | Standalone desorber network - mirrors the absorber examples, including the `vapor_state` option of the vapor outlet |
+| `example_desorber_heated.py` | Desorber with integrated heating water side (`HeatedDesorber`) |
+| `sorption_reference.py` | Reference states of a single-effect cycle computed with the LiBr-water working pair, used as fixed inputs in the example scripts |
+
+The solution streams use a `SolutionConnection` with the working pair
+`mixing_rule="libr-water"` (Patek and Klomfar 2006, IAPWS-95 reference state).
+`xi` is the LiBr mass fraction. The vapor leaving a desorber is in equilibrium
+with the entering solution by default (`vapor_state="inlet-equilibrium"`),
+`"outlet-equilibrium"` and `"free"` are the alternatives.
 
 ## Installation
 
