@@ -1,10 +1,12 @@
 [project]
 name = "tespy-sorption-models"
 version = "0.1.0"
-description = "Add your description here"
+description = "Example models of the sorption components and working pairs of TESPy"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "matplotlib",
+    "teqp>=0.23",
     "tespy",
 ]
 
