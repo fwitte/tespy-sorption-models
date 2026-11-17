@@ -5,6 +5,13 @@ is purified by partial condensation in the rectifier; the reflux is the liquid
 in equilibrium with the entering vapor. Here the reflux leaves the system, in
 a cycle it returns to the generator (see nh3_water_chiller.py). Requires the
 optional dependency teqp.
+
+References
+----------
+- Tillner-Roth and Friend (1998), https://doi.org/10.1063/1.556015, adopted as
+  IAPWS G4-01: NH3-water pair.
+- Bell, Deiters and Leal (2022), https://doi.org/10.1021/acs.iecr.2c00237:
+  teqp Helmholtz energy kernel.
 """
 from tespy.components import Desorber
 from tespy.components import Rectifier

@@ -17,6 +17,7 @@ EXAMPLES = [
     "nh3_water_absorber.py",
     "nh3_water_generator_rectifier.py",
     "nh3_water_chiller.py",
+    "custom_working_pair.py",
 ]
 
 statuses = []

@@ -4,6 +4,18 @@ Generator (desorber), condenser, evaporator, absorber, solution pump,
 solution heat exchanger and two valves; the solution circuit is closed by a
 cycle closer. After the design point, the generator outlet temperature is
 varied.
+
+References
+----------
+- Patek and Klomfar (2006), https://doi.org/10.1016/j.ijrefrig.2005.10.007:
+  LiBr-water pair.
+- Wagner and Pruss (2002), https://doi.org/10.1063/1.1461829: IAPWS-95 water
+  vapor and reference state.
+- CoolSolve Library CSL-0043, https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/cycles/absorption_sorption/libr_water_absorption_chiller:
+  evaporator, absorber and condenser temperatures of this example; generator
+  temperature, solution heat exchanger and pump differ.
+- Herold, Radermacher and Klein: Absorption Chillers and Heat Pumps, CRC
+  Press, 1996: single-effect cycle.
 """
 from tespy.components import Absorber
 from tespy.components import CycleCloser

@@ -14,6 +14,17 @@ effectiveness refers to the liquid side, which has the larger heat capacity
 rate, the cold vapor leaves at 54.8 degC above the 40 degC of the entering
 liquid. TESPy reproduces the state and reports a cold side effectiveness above
 1 (network status 1).
+
+References
+----------
+- Tillner-Roth and Friend (1998), https://doi.org/10.1063/1.556015, adopted as
+  IAPWS G4-01: NH3-water pair.
+- Bell, Deiters and Leal (2022), https://doi.org/10.1021/acs.iecr.2c00237:
+  teqp Helmholtz energy kernel.
+- CoolSolve Library CSL-0249, https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/cycles/absorption_sorption/nh3h2o_absorption_chiller:
+  design point of this example.
+- Herold, Radermacher and Klein: Absorption Chillers and Heat Pumps, CRC
+  Press, 1996: single-effect cycle.
 """
 from tespy.components import Absorber
 from tespy.components import CycleCloser

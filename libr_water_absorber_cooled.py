@@ -2,6 +2,13 @@
 
 The heat of absorption goes to the cooling water (in2 to out2), the vapor
 enters at in3.
+
+References
+----------
+- Patek and Klomfar (2006), https://doi.org/10.1016/j.ijrefrig.2005.10.007:
+  LiBr-water pair.
+- Wagner and Pruss (2002), https://doi.org/10.1063/1.1461829: IAPWS-95 water
+  vapor and reference state.
 """
 from tespy.components import CooledAbsorber
 from tespy.components import Sink

@@ -3,6 +3,13 @@
 The refrigerant (0.9995 NH3) leaving the evaporator is absorbed in the weak
 solution; with NH3-water the vapor is a SolutionConnection of the same
 working pair. Requires the optional dependency teqp.
+
+References
+----------
+- Tillner-Roth and Friend (1998), https://doi.org/10.1063/1.556015, adopted as
+  IAPWS G4-01: NH3-water pair.
+- Bell, Deiters and Leal (2022), https://doi.org/10.1021/acs.iecr.2c00237:
+  teqp Helmholtz energy kernel.
 """
 from tespy.components import Absorber
 from tespy.components import Sink

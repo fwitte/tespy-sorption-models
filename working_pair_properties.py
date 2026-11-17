@@ -7,6 +7,17 @@
   the optional dependency teqp).
 
 The figures are written to working_pair_properties.svg.
+
+References
+----------
+- Patek and Klomfar (2006), https://doi.org/10.1016/j.ijrefrig.2005.10.007:
+  LiBr-water pair.
+- Wagner and Pruss (2002), https://doi.org/10.1063/1.1461829: IAPWS-95 water
+  vapor and reference state.
+- Tillner-Roth and Friend (1998), https://doi.org/10.1063/1.556015, adopted as
+  IAPWS G4-01: NH3-water pair.
+- Bell, Deiters and Leal (2022), https://doi.org/10.1021/acs.iecr.2c00237:
+  teqp Helmholtz energy kernel.
 """
 import matplotlib.pyplot as plt
 import numpy as np
