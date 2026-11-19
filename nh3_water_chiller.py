@@ -20,9 +20,11 @@ References
 - Tillner-Roth and Friend (1998), https://doi.org/10.1063/1.556015, adopted as
   IAPWS G4-01: NH3-water pair.
 - Bell, Deiters and Leal (2022), https://doi.org/10.1021/acs.iecr.2c00237:
-  teqp Helmholtz energy kernel.
-- CoolSolve Library CSL-0249, https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/cycles/absorption_sorption/nh3h2o_absorption_chiller:
-  design point of this example.
+  teqp Helmholtz energy kernel, https://github.com/usnistgov/teqp.
+- CoolSolve Library CSL-0249, https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/refrigeration_heat_pumps/absorption/nh3h2o_absorption_chiller:
+  design point of this example, with the CoolSolve solution
+  nh3h2o_absorption_chiller.sol. CoolSolve, https://github.com/CoolProp/CoolSolve,
+  implements IAPWS G4-01 in src/nh3h2o.cpp and src/nh3h2o_flash.cpp.
 - Herold, Radermacher and Klein: Absorption Chillers and Heat Pumps, CRC
   Press, 1996: single-effect cycle.
 """

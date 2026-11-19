@@ -10,10 +10,12 @@ References
 - Patek and Klomfar (2006), https://doi.org/10.1016/j.ijrefrig.2005.10.007:
   LiBr-water pair.
 - Wagner and Pruss (2002), https://doi.org/10.1063/1.1461829: IAPWS-95 water
-  vapor and reference state.
-- CoolSolve Library CSL-0043, https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/cycles/absorption_sorption/libr_water_absorption_chiller:
+  vapor and reference state, evaluated with CoolProp,
+  https://github.com/CoolProp/CoolProp.
+- CoolSolve Library CSL-0043, https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/refrigeration_heat_pumps/absorption/libr_water_absorption_chiller:
   evaporator, absorber and condenser temperatures of this example; generator
-  temperature, solution heat exchanger and pump differ.
+  temperature, solution heat exchanger and pump differ. The model runs in
+  CoolSolve, https://github.com/CoolProp/CoolSolve.
 - Herold, Radermacher and Klein: Absorption Chillers and Heat Pumps, CRC
   Press, 1996: single-effect cycle.
 """

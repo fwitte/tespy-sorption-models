@@ -14,17 +14,17 @@ LiBr-water and NH3-water.
 
 | File | Description | References |
 |------|-------------|------------|
-| `libr_water_absorber.py` | `Absorber`: outlet enthalpy, mass flow, temperature and composition specifications, approach to equilibrium `td_eq` | [1], [2] |
-| `libr_water_absorber_cooled.py` | `CooledAbsorber` with cooling water: vapor mass flow, terminal temperature difference and heat flow specifications | [1], [2] |
-| `libr_water_desorber.py` | `Desorber`: the `vapor_state` options and outlet specifications | [1], [2] |
-| `libr_water_desorber_heated.py` | `HeatedDesorber` with heating water | [1], [2] |
-| `libr_water_chiller.py` | Closed single-effect LiBr-water chiller with solution heat exchanger, sweep of the generator temperature | [1], [2], [6], [8] |
-| `libr_water_reference.py` | Reference states of a single-effect cycle from the LiBr-water pair, inputs of the LiBr-water component examples | [1], [2] |
-| `nh3_water_absorber.py` | `Absorber` with NH3-water, the refrigerant vapor is a solution connection | [3], [4], [5] |
-| `nh3_water_generator_rectifier.py` | `Desorber` and `Rectifier`: purification of the generator vapor, sweep of the refrigerant purity | [3], [4], [5] |
-| `nh3_water_chiller.py` | Closed NH3-water chiller with rectifier, solution and refrigerant heat exchanger, sweep of the evaporation temperature | [3], [4], [5], [7], [8] |
-| `custom_working_pair.py` | Custom working pair derived from LiBr-water with a limited equilibrium composition, registered as mixing rule and used in an absorber | [1], [2] |
-| `working_pair_properties.py` | Duehring chart of LiBr-water and bubble and dew lines of NH3-water, written to `working_pair_properties.svg` | [1]-[5] |
+| `libr_water_absorber.py` | `Absorber`: outlet enthalpy, mass flow, temperature and composition specifications, approach to equilibrium `td_eq` | [1], [2], [12] |
+| `libr_water_absorber_cooled.py` | `CooledAbsorber` with cooling water: vapor mass flow, terminal temperature difference and heat flow specifications | [1], [2], [12] |
+| `libr_water_desorber.py` | `Desorber`: the `vapor_state` options and outlet specifications | [1], [2], [12] |
+| `libr_water_desorber_heated.py` | `HeatedDesorber` with heating water | [1], [2], [12] |
+| `libr_water_chiller.py` | Closed single-effect LiBr-water chiller with solution heat exchanger, sweep of the generator temperature | [1], [2], [6], [8], [10], [12] |
+| `libr_water_reference.py` | Reference states of a single-effect cycle from the LiBr-water pair, inputs of the LiBr-water component examples | [1], [2], [12] |
+| `nh3_water_absorber.py` | `Absorber` with NH3-water, the refrigerant vapor is a solution connection | [3], [4], [5], [11] |
+| `nh3_water_generator_rectifier.py` | `Desorber` and `Rectifier`: purification of the generator vapor, sweep of the refrigerant purity | [3], [4], [5], [11] |
+| `nh3_water_chiller.py` | Closed NH3-water chiller with rectifier, solution and refrigerant heat exchanger, sweep of the evaporation temperature | [3], [4], [5], [7], [8], [9], [10], [11] |
+| `custom_working_pair.py` | Custom working pair derived from LiBr-water with a limited equilibrium composition, registered as mixing rule and used in an absorber | [1], [2], [12] |
+| `working_pair_properties.py` | Duehring chart of LiBr-water and bubble and dew lines of NH3-water, written to `working_pair_properties.svg` | [1]-[5], [11], [12] |
 | `run_examples.py` | Runs all examples and reports the convergence of every solve | |
 
 ## Modeling notes
@@ -108,17 +108,37 @@ Reference models:
    systèmes thermiques (J. Lebrun, V. Lemort, S. Bertagnolio).
    `libr_water_chiller.py` uses its evaporator (5 degC), absorber (40 degC)
    and condenser (45 degC) temperatures; the generator temperature, the
-   solution heat exchanger and the pump differ.
+   solution heat exchanger and the pump differ. Model
+   [`libr_water_absorption_chiller.eescode`](https://github.com/IntSusEnergySystems/CoolSolve_Library/blob/main/models/refrigeration_heat_pumps/absorption/libr_water_absorption_chiller/libr_water_absorption_chiller.eescode),
+   solution of the original EES file
+   [`libr_water_absorption_chiller.sol`](https://github.com/IntSusEnergySystems/CoolSolve_Library/blob/main/models/refrigeration_heat_pumps/absorption/libr_water_absorption_chiller/libr_water_absorption_chiller.sol).
 7. CoolSolve Library [CSL-0249][csl-0249]: single-effect ammonia-water
    absorption chiller with rectifier, the design point of
    `nh3_water_chiller.py` (identical inputs, same formulation and reference
-   state). The TESPy test `tests/test_models/test_absorption_chillers.py`
+   state). Model
+   [`nh3h2o_absorption_chiller.eescode`](https://github.com/IntSusEnergySystems/CoolSolve_Library/blob/main/models/refrigeration_heat_pumps/absorption/nh3h2o_absorption_chiller/nh3h2o_absorption_chiller.eescode),
+   CoolSolve solution
+   [`nh3h2o_absorption_chiller.sol`](https://github.com/IntSusEnergySystems/CoolSolve_Library/blob/main/models/refrigeration_heat_pumps/absorption/nh3h2o_absorption_chiller/nh3h2o_absorption_chiller.sol).
+   The TESPy test
+   [`tests/test_models/test_absorption_chillers.py`](https://github.com/oemof/tespy/blob/feature/sorption-components/tests/test_models/test_absorption_chillers.py)
    checks the TESPy model against it.
 8. K. E. Herold, R. Radermacher, S. A. Klein: Absorption Chillers and Heat
    Pumps. CRC Press, 1996 (2nd edition 2016) - standard single-effect cycles.
 
-The models of the CoolSolve Library run in [CoolSolve][], the open-source
-EES-compatible equation solver.
+Software and model repositories:
+
+9. [CoolSolve][] (MIT): open-source EES-compatible equation solver on
+   CoolProp. Its implementation of IAPWS G4-01
+   ([`src/nh3h2o.cpp`](https://github.com/CoolProp/CoolSolve/blob/main/src/nh3h2o.cpp),
+   phase equilibrium and flashes in
+   [`src/nh3h2o_flash.cpp`](https://github.com/CoolProp/CoolSolve/blob/main/src/nh3h2o_flash.cpp))
+   computed the CSL-0249 solution [7], against which the NH3-water pair of
+   TESPy is validated.
+10. [CoolSolve Library][] (MIT): curated library of EES models for CoolSolve,
+    source of the reference models [6] and [7] with their stored solutions.
+11. [teqp][] (NIST): C++ library with Python interface for equations of state
+    with automatic differentiation, kernel [5] of the NH3-water pair.
+12. [CoolProp][] (MIT): water and steam properties after IAPWS-95 [2].
 
 ## MIT License
 
@@ -147,6 +167,9 @@ SOFTWARE.
   [feature/sorption-components]: https://github.com/oemof/tespy/tree/feature/sorption-components
   [uv]: https://docs.astral.sh/uv/
   [CoolSolve]: https://github.com/CoolProp/CoolSolve
-  [csl-0043]: https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/cycles/absorption_sorption/libr_water_absorption_chiller
-  [csl-0249]: https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/cycles/absorption_sorption/nh3h2o_absorption_chiller
+  [CoolSolve Library]: https://github.com/IntSusEnergySystems/CoolSolve_Library
+  [teqp]: https://github.com/usnistgov/teqp
+  [CoolProp]: https://github.com/CoolProp/CoolProp
+  [csl-0043]: https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/refrigeration_heat_pumps/absorption/libr_water_absorption_chiller
+  [csl-0249]: https://github.com/IntSusEnergySystems/CoolSolve_Library/tree/main/models/refrigeration_heat_pumps/absorption/nh3h2o_absorption_chiller
   [issues]: https://github.com/oemof/tespy/issues

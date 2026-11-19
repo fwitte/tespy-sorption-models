@@ -9,7 +9,7 @@ References
 - Tillner-Roth and Friend (1998), https://doi.org/10.1063/1.556015, adopted as
   IAPWS G4-01: NH3-water pair.
 - Bell, Deiters and Leal (2022), https://doi.org/10.1021/acs.iecr.2c00237:
-  teqp Helmholtz energy kernel.
+  teqp Helmholtz energy kernel, https://github.com/usnistgov/teqp.
 """
 from tespy.components import Absorber
 from tespy.components import Sink
